@@ -2,8 +2,101 @@
 <html lang="es" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Loguin IMC</title>
+    <title>Inicio de Sesión || Calcular IMC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <style media="screen">
+    body{
+      background-color: #008744;
+    }
+        /* [v-cloak] {
+          display: none;
+        } */
+        .fas{
+          font-size: 30px !important;
+        }
+        .tamano{
+          font-size: 35px;
+          cursor: pointer;
+        }
+        .twitter{
+          color:#3bc9db;
+        }
+        .facebook{
+          color: #4267b2;
+        }
+        .google{
+          color:#d62d20;
+        }
+        /* .fa-google{
+          color: #d62d20
+        } */
+    </style>
   </head>
   <body>
+    <!--
+    Colores
+    Color1:
+    Color2:
+    Color3:
+   -->
+   <div id="app" v-cloak>
+       <!-- Subir Archivo -->
+       <div class="container" >
+         <div class="row">
+           <div class="col s6 m7 offset-m3">
+             <h4 class="header center-align">
+               Vamos! Inicia Sesión
+             </h4>
+             <div class="card horizontal animated fadeIn">
+             <div class="card-stacked">
+               <div class="card-content">
+                 <div class="github card">
+                    <p class="center-align card-content tamano"> <i class="fab fa-github"></i></p>
+                 </div>
+                 <div class="google card" @click="google()">
+                    <p class="center-align card-content tamano"> <i class="fab fa-google"></i></p>
+                 </div>
+                 <div class="facebook card">
+                    <p class="center-align card-content tamano"> <i class="fab fa-facebook-square"></i></p>
+                 </div>
+                 <div class="twitter card">
+                    <p class="center-align card-content tamano"> <i class="fab fa-twitter"></i></p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         </div>
+
+       </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCBmTdh3gfy4SRrNxDXOmV53rpk43NtQ90",
+        authDomain: "enredes-f8244.firebaseapp.com",
+        databaseURL: "https://enredes-f8244.firebaseio.com",
+        projectId: "enredes-f8244",
+        storageBucket: "enredes-f8244.appspot.com",
+        messagingSenderId: "870210169558"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    <!-- index -->
+    <script type="text/javascript" src="js/login.js"></script>
   </body>
 </html>

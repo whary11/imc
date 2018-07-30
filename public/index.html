@@ -11,7 +11,7 @@
     <style media="screen">
         [v-cloak] {
           display: none;
-        }  
+        }
     </style>
   </head>
   <body>
@@ -22,7 +22,7 @@
     Color3:
 
    -->
-   <div id="app" v-cloak class="">
+   <div id="app" v-cloak v-if="login">
      <!-- Hacer loguin -->
      <!-- <div v-if="!login">
        Hacer Loguin en esta parte
@@ -30,7 +30,7 @@
      Mostrar a los unisarios iniciados
      <div>
    -->
-       <h1 class="center-align">Calcular IMC <i style="color:#09C284"class="fas fa-dumbbell"></i></h1>
+       <h1 class="center-align">Calcular IMC <i style="color:#09C284" class="fas fa-dumbbell"></i></h1>
        <!-- Subir Archivo -->
        <div class="container">
          <div class="row">
@@ -62,7 +62,7 @@
                </div>
              </div>
            </div>
-           
+
          </div>
        </div>
 
@@ -92,7 +92,7 @@
                <td>{{trunc(dato.peso/(dato.talla*dato.talla))}}</td>
 
   <!--
-    
+
     Menor a 18	 Peso bajo. Necesario valorar signos de desnutrición
     18 a 24.9	 Normal
     25 a 26.9	 Sobrepeso
