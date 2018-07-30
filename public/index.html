@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <style media="screen">
+        [v-cloak] {
+          display: none;
+        }  
+    </style>
   </head>
   <body>
     <!--
@@ -17,7 +22,7 @@
     Color3:
 
    -->
-   <div id="app">
+   <div id="app" v-cloak class="">
      <!-- Hacer loguin -->
      <!-- <div v-if="!login">
        Hacer Loguin en esta parte
@@ -43,9 +48,26 @@
            </form>
          </div>
        </div>
+       <!-- Preloader -->
+       <div class="row">
+         <div class="col s6 offset-s6">
+           <div class="preloader-wrapper big active" v-if='preload'>
+             <div class="spinner-layer spinner-blue">
+               <div class="circle-clipper left">
+                 <div class="circle"></div>
+               </div><div class="gap-patch">
+                 <div class="circle"></div>
+               </div><div class="circle-clipper right">
+                 <div class="circle"></div>
+               </div>
+             </div>
+           </div>
+           
+         </div>
+       </div>
 
        <!-- Tabla de datos  -->
-       <div class="container" v-if="datos">
+       <div class="container" v-if="datos.length > 0">
          <table class="animated wobble">
            <thead>
              <tr>
@@ -55,12 +77,13 @@
                <th>Peso</th>
                <th>Talla</th>
                <th>IMC</th>
+               <th>Edad</th>
                <th>Pso para la Talla</th>
              </tr>
            </thead>
 
            <tbody>
-             <tr v-for="(dato, index) in datos">
+             <tr v-for="(dato, index) in datos" class="animated rotateIn">
                <td>{{index +1}}</td>
                <td>{{dato.Nombre}}</td>
                <td>{{dato.Apellidos}}</td>
@@ -69,6 +92,7 @@
                <td>{{trunc(dato.peso/(dato.talla*dato.talla))}}</td>
 
   <!--
+    
     Menor a 18	 Peso bajo. Necesario valorar signos de desnutrición
     18 a 24.9	 Normal
     25 a 26.9	 Sobrepeso
@@ -80,6 +104,8 @@
 
    <!-- Probar el condicional con más datos. -->
 
+               <!-- <td>{{ calculaEdad(convertirFceha(dato.nacimiento))}}</td> -->
+               <td>{{ dato.edad }}</td>
                <td v-if="dato.peso/(dato.talla*dato.talla) < 18" class="red-text text-darken-2">Peso bajo. Necesario valorar signos de desnutrición</td>
                <td v-else-if="dato.peso/(dato.talla*dato.talla) > 40" class="red-text">Obesidad grado III Extrema o Mórbida. Riesgo relativo extremadamente alto para el desarrollo de enfermedades cardiovasculares</td>
                <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 30" class="red-text text-darken-1">Obesidad grado II. Riesgo relativo muy alto para el desarrollo de enfermedades cardiovasculares</td>
@@ -92,7 +118,7 @@
            </tbody>
          </table>
        </div>
-     <a href="login.html">Loguin</a>
+     <!-- <a href="login.html">Loguin</a> -->
    <!-- </div>
      <pre>{{$data}}</pre>
    </div> -->
@@ -109,7 +135,8 @@
       };
       firebase.initializeApp(config);
     </script>
-
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
     <!-- Librería Excel -->
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <!-- Vue.JS -->
