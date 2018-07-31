@@ -2,7 +2,6 @@ new Vue({
   el:'#app',
   data:{
     usuario:'',
-
   },
   beforeCreate(){
     var self = this
@@ -12,20 +11,20 @@ new Vue({
         }
     });
   },
-  created(){
-      // var database = firebase.database().ref('users/');
-  },
   methods:{
     google(){
         var self = this
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
         this.account(provider)
-
     },
     facebook(){
       var self = this;
       var provider = new firebase.auth.FacebookAuthProvider();
+      this.account(provider)
+    },
+    github(){
+      var provider = new firebase.auth.GithubAuthProvider();
       this.account(provider)
     },
     account(proveedor){
@@ -47,7 +46,6 @@ new Vue({
           esAnonimo: isAnonymous,
         }
         let db = firebase.database();
-        // var pathname = window.location.pathname;
         let ref = db.ref('imc/' + usuario.id);
         ref.set(usuario);
         window.location="index.html";
@@ -55,15 +53,10 @@ new Vue({
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
+        // console.log(errorMessage);
         if (errorMessage == 'An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.') {
           M.toast({html: 'Debe utilizar otra cuenta para el inico de Sesión, parece que alguien ya ha usado tu correo. '+error.email})
         }
-        // console.log(error);
-        // // The email of the user's account used.
-        // var email = error.email;
-        // // The firebase.auth.AuthCredential type that was used.
-        // var credential = error.credential;
-        // // ...
       });
     }
   }

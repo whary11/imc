@@ -59,11 +59,11 @@
       Color2:
       Color3:
      -->
-         <h1 class="center-align">Calcular IMC <i style="color:#09C284" class="fas fa-dumbbell"></i></h1>
+         <!-- <h1 class="center-align">Calcular IMC <i style="color:#09C284" class="fas fa-dumbbell"></i></h1> -->
          <!-- Subir Archivo -->
          <div class="container">
            <div class="row">
-             <form class="col s6 offset-s3 card">
+             <form class="col s12 m8 l10 offset-m2 offset-l1 card">
                <div class="file-field input-field">
                  <div class="btn">
                    <span>Subir excel</span>
@@ -75,9 +75,9 @@
                </div>
                <!-- <button type="submit" name="button">Subir</button> -->
                <div style="padding:10px;" >
-                  <p v-if="datos.length < 1">Debes crear una tabla en formato exel con estos datos:
+                  <p v-if="datos.length < 1">Debes crear una tabla en formato excel con estos datos:
                   nombre, apellidos, peso, talla.</p>
-                  <p v-else>Actulice para un nuevo archivo.</p>
+                  <p v-else>Actulice para carcular más información.</p>
                </div>
              </form>
 
@@ -158,7 +158,7 @@
        <footer class="page-footer" style="background:#008744">
          <div class="footer-copyright">
            <div class="container">
-             <span class="center-align"> Desarrollado por Luis Fernando Raga</span>
+             <p class="center-align"> Desarrollado por Luis Fernando Raga</p>
              <!-- <span class="right">Todos los derechos reservados ®</span> -->
            </div>
          </div>
