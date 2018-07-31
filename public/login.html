@@ -9,12 +9,19 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <style media="screen">
-    body{
-      background-color: #008744;
-    }
-        /* [v-cloak] {
+        [v-cloak] {
           display: none;
-        } */
+        }
+        body {
+          display: flex;
+          min-height: 100vh;
+          flex-direction: column;
+          background-color: #008744;
+        }
+
+        main {
+          flex: 1 0 auto;
+        }
         .fas{
           font-size: 30px !important;
         }
@@ -31,6 +38,9 @@
         .google{
           color:#d62d20;
         }
+        footer{
+          background-color:#008744 !important;
+        }
         /* .fa-google{
           color: #d62d20
         } */
@@ -43,7 +53,7 @@
     Color2:
     Color3:
    -->
-   <div id="app" v-cloak>
+   <main id="app" v-cloak>
        <!-- Subir Archivo -->
        <div class="container" >
          <div class="row">
@@ -54,27 +64,33 @@
              <div class="card horizontal animated fadeIn">
              <div class="card-stacked">
                <div class="card-content">
-                 <div class="github card">
+                 <!-- <div class="github card">
                     <p class="center-align card-content tamano"> <i class="fab fa-github"></i></p>
-                 </div>
+                 </div> -->
                  <div class="google card" @click="google()">
                     <p class="center-align card-content tamano"> <i class="fab fa-google"></i></p>
                  </div>
-                 <div class="facebook card">
+                 <div class="facebook card" @click="facebook()">
                     <p class="center-align card-content tamano"> <i class="fab fa-facebook-square"></i></p>
                  </div>
-                 <div class="twitter card">
+                 <!-- <div class="twitter card">
                     <p class="center-align card-content tamano"> <i class="fab fa-twitter"></i></p>
-                 </div>
+                 </div> -->
                </div>
              </div>
            </div>
          </div>
-
-         </div>
-
        </div>
-  </div>
+       </div>
+  </main>
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <div class="container">
+        <p class="center-align"> Desarrollado por Luis Fernando Raga</p>
+        <!-- <span class="right">Todos los derechos reservados ®</span> -->
+      </div>
+    </div>
+  </footer>
   <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
@@ -88,7 +104,11 @@
         storageBucket: "enredes-f8244.appspot.com",
         messagingSenderId: "870210169558"
       };
+
       firebase.initializeApp(config);
+      let db = firebase.database();
+      // var pathname = window.location.pathname;
+      let ref = db.ref('imc');
     </script>
     <script type="text/javascript" src="js/moment.min.js"></script>
     <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>

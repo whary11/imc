@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Calcular IMC</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
@@ -12,117 +12,161 @@
         [v-cloak] {
           display: none;
         }
+        body {
+          display: flex;
+          min-height: 100vh;
+          flex-direction: column;
+        }
+
+        main {
+          flex: 1 0 auto;
+        }
     </style>
   </head>
   <body>
-    <!--
-    Colores
-    Color1:
-    Color2:
-    Color3:
+    <main id="app" v-cloak>
+      <ul id="slide-out" class="sidenav">
+        <li>
+          <div class="user-view">
+          <a href="#imgusuario"><img class="circle" :src="usuario.foto"></a>
+          <a href="#nombre"><span class="gray-text name"></span>{{usuario.nombre}}</a>
+          <a href="#correo"><span class="gray-text email" >{{usuario.correo}}</span></a>
+        </div>
+      </li>
+      <li><a href="#!">Ver perfil <i class="fas fa-user"></i></a></li>
+      <li><div class="divider"></div></li>
+        <li><a class="sidenav-close" href="#!">Cerrar <i class="fas fa-times"></i></a></li>
+      <li><div class="divider"></div></li>
+      <li><a @click.prevent="cerrarSesion()" href='#'>Cerrar Sesión <i class="fas fa-power-off"></i></a></li>
+      </ul>
+      <div class="navbar-fixed">
+        <nav>
+          <div class="nav-wrapper" style="background:#008744">
+            <div href="#" data-target="slide-out" style="cursor: pointer;" class="sidenav-trigger" id="menuLateral"><i class="fas fa-bars"></i></div>
+              <ul class="right hide-on-med-and-down">
+              <li>
+                <a class="dropdown-item" @click.prevent="cerrarSesion()">
+                  <i class="fas fa-sign-out-alt"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <!--
+      Colores
+      Color1:
+      Color2:
+      Color3:
+     -->
+         <h1 class="center-align">Calcular IMC <i style="color:#09C284" class="fas fa-dumbbell"></i></h1>
+         <!-- Subir Archivo -->
+         <div class="container">
+           <div class="row">
+             <form class="col s6 offset-s3 card">
+               <div class="file-field input-field">
+                 <div class="btn">
+                   <span>Subir excel</span>
+                   <input type="file" id="excel" @change="getExcel" accept=".xlsx">
+                 </div>
+                 <div class="file-path-wrapper">
+                   <input class="file-path validate" type="text" placeholder="Datos a calcular">
+                 </div>
+               </div>
+               <!-- <button type="submit" name="button">Subir</button> -->
+               <div style="padding:10px;" >
+                  <p v-if="datos.length < 1">Debes crear una tabla en formato exel con estos datos:
+                  nombre, apellidos, peso, talla.</p>
+                  <p v-else>Actulice para un nuevo archivo.</p>
+               </div>
+             </form>
 
-   -->
-   <div id="app" v-cloak v-if="login">
-     <!-- Hacer loguin -->
-     <!-- <div v-if="!login">
-       Hacer Loguin en esta parte
-     </div>
-     Mostrar a los unisarios iniciados
-     <div>
-   -->
-       <h1 class="center-align">Calcular IMC <i style="color:#09C284" class="fas fa-dumbbell"></i></h1>
-       <!-- Subir Archivo -->
-       <div class="container">
-         <div class="row">
-           <form class="col s6 offset-s3 card">
-             <div class="file-field input-field">
-               <div class="btn">
-                 <span>Subir excel</span>
-                 <input type="file" id="excel" @change="getExcel" accept=".xlsx">
-               </div>
-               <div class="file-path-wrapper">
-                 <input class="file-path validate" type="text" placeholder="Datos a calcular">
-               </div>
-             </div>
-             <!-- <button type="submit" name="button">Subir</button> -->
-           </form>
-         </div>
-       </div>
-       <!-- Preloader -->
-       <div class="row">
-         <div class="col s6 offset-s6">
-           <div class="preloader-wrapper big active" v-if='preload'>
-             <div class="spinner-layer spinner-blue">
-               <div class="circle-clipper left">
-                 <div class="circle"></div>
-               </div><div class="gap-patch">
-                 <div class="circle"></div>
-               </div><div class="circle-clipper right">
-                 <div class="circle"></div>
-               </div>
-             </div>
            </div>
-
          </div>
-       </div>
+         <!-- Preloader -->
+         <div class="row">
+           <div class="col s6 offset-s6">
+             <div class="preloader-wrapper big active" v-if='preload'>
+               <div class="spinner-layer spinner-blue">
+                 <div class="circle-clipper left">
+                   <div class="circle"></div>
+                 </div><div class="gap-patch">
+                   <div class="circle"></div>
+                 </div><div class="circle-clipper right">
+                   <div class="circle"></div>
+                 </div>
+               </div>
+             </div>
 
-       <!-- Tabla de datos  -->
-       <div class="container" v-if="datos.length > 0">
-         <table class="animated wobble">
-           <thead>
-             <tr>
-               <th>#</th>
-               <th>Nombre</th>
-               <th>Apellido</th>
-               <th>Peso</th>
-               <th>Talla</th>
-               <th>IMC</th>
-               <th>Edad</th>
-               <th>Pso para la Talla</th>
-             </tr>
-           </thead>
+           </div>
+         </div>
 
-           <tbody>
-             <tr v-for="(dato, index) in datos" class="animated rotateIn">
-               <td>{{index +1}}</td>
-               <td>{{dato.Nombre}}</td>
-               <td>{{dato.Apellidos}}</td>
-               <td>{{dato.peso}}</td>
-               <td>{{dato.talla}}</td>
-               <td>{{trunc(dato.peso/(dato.talla*dato.talla))}}</td>
 
-  <!--
+         <!-- Tabla de datos  -->
+         <!-- <div class="container" v-if="datos.length > 0"> -->
+           <table class="animated wobble centered" v-if="datos.length > 0">
+             <thead>
+               <tr>
+                 <!-- <th>#</th> -->
+                 <th>Nombre</th>
+                 <th>Apellido</th>
+                 <th>Peso</th>
+                 <th>Talla</th>
+                 <th>IMC</th>
+                 <th>Pso para la Talla</th>
+               </tr>
+             </thead>
 
-    Menor a 18	 Peso bajo. Necesario valorar signos de desnutrición
-    18 a 24.9	 Normal
-    25 a 26.9	 Sobrepeso
-    Mayor a 27	 Obesidad
-    27 a 29.9	 Obesidad grado I. Riesgo relativo alto para desarrollar enfermedades cardiovasculares
-    30 a 39.9	 Obesidad grado II. Riesgo relativo muy alto para el desarrollo de enfermedades cardiovasculares
-    Mayor a 40	 Obesidad grado III Extrema o Mórbida. Riesgo relativo extremadamente alto para el desarrollo de enfermedades cardiovasculares
-   -->
+             <tbody>
+               <tr v-for="(dato, index) in datos" class="animated rotateIn">
+                 <!-- <td>{{index +1}}</td> -->
+                 <td>{{dato.nombres}}</td>
+                 <td>{{dato.apellidos}}</td>
+                 <td>{{dato.peso}}</td>
+                 <td>{{dato.talla}}</td>
+                 <td>{{trunc(dato.peso/(dato.talla*dato.talla))}}</td>
 
-   <!-- Probar el condicional con más datos. -->
+    <!--
 
-               <!-- <td>{{ calculaEdad(convertirFceha(dato.nacimiento))}}</td> -->
-               <td>{{ dato.edad }}</td>
-               <td v-if="dato.peso/(dato.talla*dato.talla) < 18" class="red-text text-darken-2">Peso bajo. Necesario valorar signos de desnutrición</td>
-               <td v-else-if="dato.peso/(dato.talla*dato.talla) > 40" class="red-text">Obesidad grado III Extrema o Mórbida. Riesgo relativo extremadamente alto para el desarrollo de enfermedades cardiovasculares</td>
-               <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 30" class="red-text text-darken-1">Obesidad grado II. Riesgo relativo muy alto para el desarrollo de enfermedades cardiovasculares</td>
-               <td v-else-if="dato.peso/(dato.talla*dato.talla) > 27" class="red-text text-darken-2">Obesidad grado I. Riesgo relativo alto para desarrollar enfermedades cardiovasculares</td>
-               <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 25" class="red-text text-darken-3">Sobrepeso</td>
-               <td v-else-if="dato.peso/(dato.talla*dato.talla) == 27" class="red-text text-darken-4">Obesidad</td>
-               <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 18" class="teal-text text-darken-2">Normal</td>
+      Menor a 18	 Peso bajo. Necesario valorar signos de desnutrición
+      18 a 24.9	 Normal
+      25 a 26.9	 Sobrepeso
+      Mayor a 27	 Obesidad
+      27 a 29.9	 Obesidad grado I. Riesgo relativo alto para desarrollar enfermedades cardiovasculares
+      30 a 39.9	 Obesidad grado II. Riesgo relativo muy alto para el desarrollo de enfermedades cardiovasculares
+      Mayor a 40	 Obesidad grado III Extrema o Mórbida. Riesgo relativo extremadamente alto para el desarrollo de enfermedades cardiovasculares
+     -->
 
-             </tr>
-           </tbody>
-         </table>
-       </div>
+     <!-- Probar el condicional con más datos. -->
+
+                 <!-- <td>{{ calculaEdad(convertirFceha(dato.nacimiento))}}</td> -->
+                 <!-- <td>{{ dato.edad }}</td> -->
+                 <td v-if="dato.peso/(dato.talla*dato.talla) < 18" class="red-text text-darken-2">Peso bajo. Necesario valorar signos de desnutrición</td>
+                 <td v-else-if="dato.peso/(dato.talla*dato.talla) > 40" class="red-text">Obesidad grado III Extrema o Mórbida. Riesgo relativo extremadamente alto para el desarrollo de enfermedades cardiovasculares</td>
+                 <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 30" class="red-text text-darken-1">Obesidad grado II. Riesgo relativo muy alto para el desarrollo de enfermedades cardiovasculares</td>
+                 <td v-else-if="dato.peso/(dato.talla*dato.talla) > 27" class="red-text text-darken-2">Obesidad grado I. Riesgo relativo alto para desarrollar enfermedades cardiovasculares</td>
+                 <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 25" class="red-text text-darken-3">Sobrepeso</td>
+                 <td v-else-if="dato.peso/(dato.talla*dato.talla) == 27" class="red-text text-darken-4">Obesidad</td>
+                 <td v-else-if="dato.peso/(dato.talla*dato.talla) >= 18" class="teal-text text-darken-2">Normal</td>
+
+               </tr>
+             </tbody>
+           </table>
+         <!-- </div> -->
+       <!-- </div> -->
+     </main>
+       <footer class="page-footer" style="background:#008744">
+         <div class="footer-copyright">
+           <div class="container">
+             <span class="center-align"> Desarrollado por Luis Fernando Raga</span>
+             <!-- <span class="right">Todos los derechos reservados ®</span> -->
+           </div>
+         </div>
+       </footer>
      <!-- <a href="login.html">Loguin</a> -->
-   <!-- </div>
-     <pre>{{$data}}</pre>
-   </div> -->
-   <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
     <script>
       // Initialize Firebase
       var config = {

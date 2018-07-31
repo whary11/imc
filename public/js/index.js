@@ -1,21 +1,46 @@
+
+
 new Vue({
   el:'#app',
   data:{
     login:false,
+    usuario:'',
     rABS:true,
     datos: [],
     preload:false,
   },
-  created:function(){
-    firebase.auth().onAuthStateChanged((user)=>{
-      if (user) {
-          // User is signed in
-          this.login = true
-          // ...
-      }
-    });
+  beforeCreate:function(){
+      document.addEventListener('DOMContentLoaded', ()=> {
+        // Botones flotantes
+        // let fixedActionBtn = M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {});
+        // let actualizarMenu = M.Modal.init(document.querySelectorAll('#actualizarMenu'), {dismissible:false});
+        // let tooltip = M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
+        let sidenav = M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+      })
+      var self = this
+      firebase.auth().onAuthStateChanged((user)=>{
+          if (user) {
+              self.login = true
+              var nombre = user.displayName;
+              var email = user.email;
+              var emailVerified = user.emailVerified;
+              var photoURL = user.photoURL;
+              var isAnonymous = user.isAnonymous;
+              var uid = user.uid;
+              var providerData = user.providerData;
+              self.usuario = {
+                nombre: nombre,
+                correo:email,
+                foto: photoURL,
+                id: uid,
+                esAnonimo: isAnonymous,
+              }
+          } else {
+              self.login = false
+              window.location="login.html";
+          }
+      });
     moment.locale('es')
-// firebase.auth().signInWithEmailAndPassword(email, password);
   },
   methods:{
     getExcel(e){
@@ -31,15 +56,12 @@ new Vue({
         // Pasando la información a la propiedad datos
         let worksheet = workbook.Sheets [first_sheet_name];
         let getInfo = XLSX.utils.sheet_to_json(worksheet, {raw: true});
-        this.preload = false
         getInfo.map((index, elem)=>{
           index.nacimiento = new Date(index.nacimiento)
           this.datos.push(index)
         })
-
-
-        // this.datos = getInfo;
-        console.log(this.datos);
+        this.preload = false
+        M.toast({html: this.usuario.nombre+', sus datos se han procesado con exito! ('+this.datos.length+' resgistros)'})
       };
       if(this.rABS) reader.readAsBinaryString(f); else reader.readAsArrayBuffer(f);
     },
@@ -94,6 +116,14 @@ new Vue({
       			console.log( years + ' años');
       	    }
       	}
-}
+      },
+      cerrarSesion(){
+        firebase.auth().signOut().then(() => {
+          window.location="login.html";
+        }).catch(error =>{
+          console.log(error)
+        })
+
+      }
   }
 })
